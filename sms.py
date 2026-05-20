@@ -2,9 +2,12 @@ import requests
 from random import choice, randint
 from string import ascii_lowercase
 
-# Colorama yerine boş sınıflar tanımlayarak kodun kalanını bozmadan hatayı çözüyoruz
-class Fore: LIGHTGREEN_EX = ""; LIGHTRED_EX = ""
-class Style: RESET_ALL = ""
+class Fore:
+    LIGHTGREEN_EX = ""
+    LIGHTRED_EX = ""
+
+class Style:
+    RESET_ALL = ""
 
 
 class SendSms():
